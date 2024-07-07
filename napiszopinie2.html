@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularz użytkownika do opinii</title>
+</head>
+<body>
+
+<!-- Formularz opinii -->
+<form id="formularzOpinii" action="wyslijopinie2.php" method="post" onsubmit="return submitReview(event);">
+  <label for="imie">Twoje imię:</label><br>
+  <input type="text" id="imie" name="imie" required><br><br>
+  
+  <label for="ocena">Twoja ocena (w skali 1-5):</label><br>
+  <input type="number" id="ocena" name="ocena" min="1" max="5" required><br><br>
+  
+  <label for="opinia">Twoja opinia:</label><br>
+  <textarea id="opinia" name="opinia" rows="4" cols="50" required></textarea><br><br>
+  
+  <button type="submit">Wyślij opinię</button>
+    <br/><br/>
+      <a href="konto2.php">Wróć do swojego konta</a>
+    <br/><br/>
+</form>
+
+<script>
+  function submitReview(event) {
+        event.preventDefault();
+//function submitReview() {
+  
+  // Pobierz dane z formularza
+  var imie = document.getElementById('imie').value;
+  var ocena = document.getElementById('ocena').value;
+  var opinia = document.getElementById('opinia').value;
+
+   // Prosta walidacja danych
+   if (imie === '' || ocena === '' || opinia === '') {
+        alert('Proszę poprawnie wypełnić wszystkie pola.');
+        return false;
+    }
+
+  // Wyślij dane do serwera AJAX-em
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'wyslijopinie2.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert('Opinia została wysłana pomyślnie!');
+            } else {
+                alert('Wystąpił błąd przy wysyłaniu opinii.');
+            }
+        };
+        xhr.send('imie=' + encodeURIComponent(imie) + '&ocena=' + encodeURIComponent(ocena) + '&opinia=' + encodeURIComponent(opinia));
+
+        return false;
+    }
+
+  // Czyszczenie pól formularza
+    document.getElementById('imie').value = '';
+    document.getElementById('ocena').value = '';
+    document.getElementById('opinia').value = '';
+
+</script>
+
+  
+
+</body>
+</html>
